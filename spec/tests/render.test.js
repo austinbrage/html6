@@ -171,6 +171,26 @@ test('map', async ({ t }) => {
   t.equal(result, '<ul><li>a</li><li>b</li></ul>')
 })
 
+test('map for objects', async ({ t }) => {
+  var page = '<ul><li map="project in projects">{{project}}</li></ul>'
+
+  var renderer = html.compile(page)
+  var data = { projects: { "project1": "a", "project2": "b" } }
+  var result = renderer.render(data)
+
+  t.equal(result, '<ul><li>a</li><li>b</li></ul>')
+})
+
+test('map for objects with key', async ({ t }) => {
+  var page = '<ul><li map="project, key in projects">{{project}} is in {{key}}</li></ul>'
+
+  var renderer = html.compile(page)
+  var data = { projects: { "project1": "a", "project2": "b" } }
+  var result = renderer.render(data)
+
+  t.equal(result, '<ul><li>a is in project1</li><li>b is in project2</li></ul>')
+})
+
 test('map object notation', async ({ t }) => {
   var page = '<ul><li map="p of projects.items">{{p.name}}</li></ul>'
 
