@@ -602,3 +602,17 @@ test('non-html6 template tag - expression & slot', async ({ t }) => {
 
   t.equal(result, '<template x-if="true">hello</template><span>world</span>')
 })
+
+test('multiline component definition', async ({ t }) => {
+  var component = `<template
+    is="card"
+    foo="bar"
+  ><h1>{{value}}</h1></template>`
+  var page = '<card></card>'
+
+  var renderer = html.compile(page, { components: [component] })
+  var data = { value: 'world' }
+  var result = renderer.render(data)
+
+  t.equal(result, '<h1>world</h1>')
+})
