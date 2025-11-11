@@ -580,3 +580,25 @@ test('boolean attribute expression - false', async ({ t }) => {
 
   t.equal(result, '<button >hello</button>')
 })
+
+test('non-html6 template tag', async ({ t }) => {
+  var component = '<template is="component"><template x-if="true">hello</template><span>world</span></template>'
+  var page = '<component></component>'
+
+  var renderer = html.compile(page, { components: [component] })
+  var data = {}
+  var result = renderer.render(data)
+
+  t.equal(result, '<template x-if="true">hello</template><span>world</span>')
+})
+
+test('non-html6 template tag - expression & slot', async ({ t }) => {
+  var component = '<template is="component"><slot></slot></template>'
+  var page = '<component><template x-if="true">{{value1}}</template><span>{{value2}}</span></component>'
+
+  var renderer = html.compile(page, { components: [component] })
+  var data = { value1: 'hello', value2: 'world' }
+  var result = renderer.render(data)
+
+  t.equal(result, '<template x-if="true">hello</template><span>world</span>')
+})
